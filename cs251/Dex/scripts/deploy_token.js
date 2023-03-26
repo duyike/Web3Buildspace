@@ -5,7 +5,7 @@ async function main() {
   const tokenContract = await TokenContract.deploy();
   await tokenContract.deployed();
   console.log(
-    `Finished writing exchange contract address: ${tokenContract.address}`
+    `Finished writing token contract address: ${tokenContract.address}`
   );
 }
 

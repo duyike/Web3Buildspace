@@ -20,5 +20,11 @@
     "solidity-coverage": "^0.8.2",
     "typechain": "^8.1.0"
   },
+  "scripts": {
+    "local-node": "npx hardhat node",
+    "deploy-local": "npx hardhat run --network localhost scripts/deploy_token.js && npx hardhat run --network localhost scripts/deploy_exchange.js",
+    "deploy-token-local": "npx hardhat run --network localhost scripts/deploy_token.js",
+    "deploy-exchange-local": "npx hardhat run --network localhost scripts/deploy_exchange.js"
+  },
   "type": "commonjs"
 }
