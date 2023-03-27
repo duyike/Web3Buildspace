@@ -25,7 +25,7 @@ contract TokenExchange is Ownable {
     address[] private lp_providers;
 
     // liquidity rewards
-    uint private swap_fee_numerator = 0;
+    uint private swap_fee_numerator = 3;
     uint private swap_fee_denominator = 100;
 
     // Constant: x * y = k
@@ -143,7 +143,6 @@ contract TokenExchange is Ownable {
         token.safeTransfer(msg.sender, amountToken);
         bool sent = payable(msg.sender).send(amountETH);
         require(sent, "Failed to send ETH");
-        console.log("amountToken", amountToken, "amountETH", amountETH);
 
         uint oldEthReserves = eth_reserves;
         eth_reserves -= amountETH;
@@ -183,7 +182,6 @@ contract TokenExchange is Ownable {
         token.safeTransfer(msg.sender, amountToken);
         bool sent = payable(msg.sender).send(amountETH);
         require(sent, "Failed to send ETH");
-        console.log(lps[msg.sender], eth_reserves, amountToken, amountETH);
 
         uint oldEthReserves = eth_reserves;
         eth_reserves -= amountETH;
@@ -230,6 +228,9 @@ contract TokenExchange is Ownable {
         );
 
         uint amountETH = eth_reserves - k / (token_reserves + amountTokens);
+        // k will now slightly change on every swap. Ignore this for now.
+        uint fee = (amountETH * swap_fee_numerator) / swap_fee_denominator;
+        amountETH -= fee;
 
         token.safeTransferFrom(msg.sender, address(this), amountTokens);
         bool sent = payable(msg.sender).send(amountETH);
@@ -252,6 +253,10 @@ contract TokenExchange is Ownable {
         );
 
         uint amountTokens = token_reserves - k / (eth_reserves + msg.value);
+        // k will now slightly change on every swap. Ignore this for now.
+        uint fee = (amountTokens * swap_fee_numerator) / swap_fee_denominator;
+        amountTokens -= fee;
+
         token.safeTransfer(msg.sender, amountTokens);
 
         eth_reserves += msg.value;
