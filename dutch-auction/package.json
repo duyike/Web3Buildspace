@@ -1,0 +1,14 @@
+{
+  "name": "dutch-auction",
+  "version": "1.0.0",
+  "description": "",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
+  "scripts": {
+    "local-deploy": "forge script script/DutchAuction.s.sol:DutchAuctionScript --rpc-url http://127.0.0.1:8545 --broadcast --verify -vvvv"
+  },
+  "author": "",
+  "license": "ISC"
+}
