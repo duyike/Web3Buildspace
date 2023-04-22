@@ -1,0 +1,10 @@
+[submodule "dutch-auction/lib/forge-std"]
+	path = dutch-auction/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
+[submodule "lib/forge-std"]
+	branch = v1.5.3
+[submodule "dutch-auction/lib/openzeppelin-contracts"]
+	path = dutch-auction/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
+[submodule "lib/openzeppelin-contracts"]
+	branch = v4.8.3
