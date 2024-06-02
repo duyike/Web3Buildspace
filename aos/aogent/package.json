@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
-  "devDependencies": {
-    "@permaweb/aoconnect": "^0.0.54"
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@permaweb/aoconnect": "^0.0.54",
+    "ollama": "^0.5.1"
   }
 }
