@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "political-agents"
+version = "0.1.0"
+description = "Political agents chat simulation using AutoGen"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+python-dotenv = "^1.0.0"
+autogen-ext = {extras = ["openai"], version = "^0.4.3"}
+autogen-core = "^0.4.3"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.2.0"
+
+[tool.ruff]
+select = ["E", "F", "I"]
+line-length = 100
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api" 
