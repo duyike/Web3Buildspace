@@ -51,7 +51,10 @@ class Chat(models.Model):
         verbose_name = 'Chat'
         verbose_name_plural = 'Chats'
         indexes = [
-            models.Index(fields=['handle', 'created_at'], name='chat_handle_created_idx')
+            models.Index(
+                fields=['handle', 'created_at'],
+                name='chat_handle_created_idx'
+            )
         ]
 
     def __str__(self):

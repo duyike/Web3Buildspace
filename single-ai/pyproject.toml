@@ -20,20 +20,16 @@ dependencies = [
     "supabase>=2.13.0,<3.0.0 ; python_version >= \"3.12\" and python_version < \"4.0\""
 ]
 
-
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
+# Line length configuration
 line-length = 88
 target-version = "py312"
 
-# Enable Pyflakes, pycodestyle, and isort
-select = ["E", "F", "I"]
-ignore = []
-
-# Exclude a variety of commonly ignored directories.
+# Exclude a variety of commonly ignored directories
 exclude = [
     ".bzr",
     ".direnv",
@@ -58,15 +54,17 @@ exclude = [
     "venv",
 ]
 
-# Allow unused variables when underscore-prefixed.
+[tool.ruff.lint]
+# Enable Pyflakes, pycodestyle, and isort
+select = ["E", "F", "I"]
+
+# Ignore specific rules for migrations
+per-file-ignores = { "single_ai/migrations/*.py" = ["E501"] }
+
+# Allow unused variables when underscore-prefixed
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-line-ending = "auto"
-
-[tool.ruff.isort]
-known-first-party = ["single_ai"]
+[tool.ruff.lint.isort]
 combine-as-imports = true
+force-wrap-aliases = true
+known-first-party = ["single_ai"]

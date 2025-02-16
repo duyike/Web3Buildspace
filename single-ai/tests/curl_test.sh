@@ -68,4 +68,14 @@ curl -X POST "$BASE_URL/chat" \
     -d "{\"handle\":\"$TWITTER_HANDLE\",\"message\":\"Can you elaborate on that?\"}"
 echo -e "\n"
 
+echo -e "${BLUE}Testing list agents endpoint${NC}"
+curl -s http://localhost:8000/agents | jq .
+echo -e "\n"
+
 echo -e "${BLUE}Tests Complete${NC}"
+
+curl -H "ApiKey: $TWEETSCOUT_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -d '{"link": "https://twitter.com/elonmusk"}' \
+    https://api.tweetscout.io/v2/user-tweets

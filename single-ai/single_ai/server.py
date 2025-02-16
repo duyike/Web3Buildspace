@@ -3,20 +3,45 @@ import os
 from django.utils import timezone
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 
-from .agent import ChatMessage, TwitterAgent
+from .agent import (
+    ChatMessage,
+    TwitterAgent as AIAgent,
+)
 from .django_setup import *  # noqa
 from .models import Agent
 
 load_dotenv()
 
 app = FastAPI(title="Single AI Agent")
-twitter_agent = TwitterAgent(
+
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "*")
+origins = [origin.strip() for origin in allowed_origins.split(",")] \
+    if "," in allowed_origins else [allowed_origins]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Use origins from env
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
+twitter_agent = AIAgent(
     openai_key=os.getenv("OPENAI_API_KEY"),
     openai_base_url=os.getenv("OPENAI_BASE_URL"),
     tweetscout_key=os.getenv("TWEETSCOUT_API_KEY"),
 )
+
+class AgentResponse(BaseModel):
+    handle: str
+    status: str
+    created_at: str
+    completed_at: str | None
+    prompt: str | None
 
 async def process_agent_creation(handle: str):
     """Async background task for agent generation"""
@@ -79,6 +104,21 @@ async def check_agent_status(handle: str):
         "created_at": agent.created_at.isoformat() if agent.created_at else None,
         "completed_at": agent.completed_at.isoformat() if agent.completed_at else None
     }
+
+@app.get("/agents", response_model=list[AgentResponse])
+async def list_agents():
+    """List all AI agents."""
+    agents = Agent.objects.all().order_by('-created_at')
+    return [
+        AgentResponse(
+            handle=agent.handle,
+            status=agent.status,
+            created_at=agent.created_at.isoformat(),
+            completed_at=agent.completed_at.isoformat() if agent.completed_at else None,
+            prompt=agent.prompt
+        )
+        for agent in agents
+    ]
 
 @app.post("/chat")
 async def chat_with_agent(message: ChatMessage):

@@ -72,6 +72,28 @@ poetry run uvicorn single_ai.server:app --reload
 
 The service will be available at `http://localhost:8000`.
 
+## Docker Deployment
+
+1. Build the Docker image:
+
+   ```bash
+   docker build -t single-ai .
+   ```
+
+2. Create a `.env` file with your configuration (see `.env.example`).
+
+3. Run the container:
+
+   ```bash
+   docker run -d \
+     --name single-ai \
+     -p 8000:8000 \
+     --env-file .env \
+     single-ai
+   ```
+
+The service will be available at `http://localhost:8000`.
+
 ## API Usage
 
 ### Reason Endpoint
